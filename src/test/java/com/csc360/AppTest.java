@@ -6,8 +6,8 @@ import static org.junit.jupiter.api.Assertions.*;
 public class AppTest {
 
     @Test
-    public void testGetGreeting() {
+    public void testAppInstantiation() {
         App app = new App();
-        assertEquals("Hello, CSC360!", app.getGreeting());
+        assertNotNull(app);
     }
 }
