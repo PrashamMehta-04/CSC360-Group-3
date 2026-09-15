@@ -23,6 +23,13 @@ public class TreeLayoutCalculator {
      * @return root PositionedNode hierarchy with calculated coordinates
      */
     public static <T> PositionedNode<T> calculateLayout(BinaryTree<T> tree, double viewportWidth) {
+        return calculateLayout(tree, viewportWidth, DEFAULT_VERTICAL_GAP);
+    }
+
+    /**
+     * Calculates node positions for a binary tree with a custom vertical gap.
+     */
+    public static <T> PositionedNode<T> calculateLayout(BinaryTree<T> tree, double viewportWidth, double verticalGap) {
         if (tree == null || tree.isEmpty()) {
             return null;
         }
@@ -35,7 +42,7 @@ public class TreeLayoutCalculator {
         double rootX = totalWidth / 2.0;
         double initialHOffset = totalWidth / 4.0;
 
-        return computeNodePosition(tree.getRoot(), rootX, DEFAULT_TOP_MARGIN, DEFAULT_VERTICAL_GAP, initialHOffset);
+        return computeNodePosition(tree.getRoot(), rootX, DEFAULT_TOP_MARGIN, verticalGap, initialHOffset);
     }
 
     /**
@@ -71,11 +78,15 @@ public class TreeLayoutCalculator {
      * Calculates the total required canvas height needed to draw the tree.
      */
     public static <T> double calculateRequiredHeight(BinaryTree<T> tree, double viewportHeight) {
+        return calculateRequiredHeight(tree, viewportHeight, DEFAULT_VERTICAL_GAP);
+    }
+
+    public static <T> double calculateRequiredHeight(BinaryTree<T> tree, double viewportHeight, double verticalGap) {
         if (tree == null || tree.isEmpty()) {
             return viewportHeight;
         }
         int depth = getTreeDepth(tree.getRoot());
-        double minHeight = (depth + 1) * DEFAULT_VERTICAL_GAP + DEFAULT_TOP_MARGIN;
+        double minHeight = (depth + 1) * verticalGap + DEFAULT_TOP_MARGIN;
         return Math.max(viewportHeight, minHeight);
     }
 

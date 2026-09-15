@@ -32,6 +32,7 @@ public class App extends Application {
     private ComboBox<String> treeTypeComboBox;
     private Label statusLabel;
     private Label zoomLabel;
+    private Slider spacingSlider;
 
     @Override
     public void start(Stage primaryStage) {
@@ -110,10 +111,21 @@ public class App extends Application {
         // Listen for scroll wheel zoom changes
         canvasPane.zoomScaleProperty().addListener((obs, oldVal, newVal) -> updateZoomLabel());
 
+        // Spacing Controls
+        Label spacingLabel = new Label("Spacing:");
+        spacingLabel.setStyle("-fx-font-weight: bold; -fx-text-fill: #2D3748; -fx-padding: 0 0 0 10;");
+
+        spacingSlider = new Slider(40, 150, TreeLayoutCalculator.DEFAULT_VERTICAL_GAP);
+        spacingSlider.setShowTickMarks(true);
+        spacingSlider.setShowTickLabels(false);
+        spacingSlider.setPrefWidth(100);
+        spacingSlider.valueProperty().addListener((obs, oldVal, newVal) -> handleBuildTree());
+
         controlBox.getChildren().addAll(
                 inputLabel, inputField,
                 modeLabel, treeTypeComboBox,
                 buildBtn, clearBtn,
+                spacingLabel, spacingSlider,
                 zoomTitle, zoomInBtn, zoomOutBtn, resetZoomBtn, zoomLabel
         );
         rootPane.setTop(controlBox);
@@ -161,13 +173,15 @@ public class App extends Application {
 
         double viewportWidth = scrollPane.getViewportBounds().getWidth() > 0 ? scrollPane.getViewportBounds().getWidth() : 1000.0;
         double viewportHeight = scrollPane.getViewportBounds().getHeight() > 0 ? scrollPane.getViewportBounds().getHeight() : 600.0;
+        
+        double verticalGap = spacingSlider != null ? spacingSlider.getValue() : TreeLayoutCalculator.DEFAULT_VERTICAL_GAP;
 
         double reqWidth = TreeLayoutCalculator.calculateRequiredWidth(tree, viewportWidth);
-        double reqHeight = TreeLayoutCalculator.calculateRequiredHeight(tree, viewportHeight);
+        double reqHeight = TreeLayoutCalculator.calculateRequiredHeight(tree, viewportHeight, verticalGap);
 
         canvasPane.setPrefSize(reqWidth, reqHeight);
 
-        PositionedNode<Integer> layout = TreeLayoutCalculator.calculateLayout(tree, reqWidth);
+        PositionedNode<Integer> layout = TreeLayoutCalculator.calculateLayout(tree, reqWidth, verticalGap);
         canvasPane.renderTree(layout);
 
         statusLabel.setText(String.format("Status: Built %s tree with %d nodes. Canvas Size: %.0fx%.0f. Scroll/Drag/Zoom to navigate.", mode, values.size(), reqWidth, reqHeight));
