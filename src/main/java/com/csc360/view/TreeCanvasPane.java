@@ -27,7 +27,7 @@ public class TreeCanvasPane extends Pane {
     /**
      * Renders a positioned tree layout hierarchy on the canvas pane.
      *
-     * @param <T> Data type of node values
+     * @param <T>        Data type of node values
      * @param rootLayout root node with calculated layout coordinates
      */
     public <T> void renderTree(PositionedNode<T> rootLayout) {
@@ -44,7 +44,8 @@ public class TreeCanvasPane extends Pane {
     }
 
     private <T> void drawLines(PositionedNode<T> node) {
-        if (node == null) return;
+        if (node == null)
+            return;
 
         if (node.getLeft() != null) {
             Line leftLine = new Line(node.getX(), node.getY(), node.getLeft().getX(), node.getLeft().getY());
@@ -64,7 +65,8 @@ public class TreeCanvasPane extends Pane {
     }
 
     private <T> void drawNodes(PositionedNode<T> node) {
-        if (node == null) return;
+        if (node == null)
+            return;
 
         // Draw circle for current node
         Circle circle = new Circle(node.getX(), node.getY(), NODE_RADIUS);

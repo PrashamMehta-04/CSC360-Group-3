@@ -4,8 +4,10 @@ import com.csc360.model.BinaryTree;
 import com.csc360.model.TreeNode;
 
 /**
- * Calculates 2D canvas layout coordinates (X, Y) for every node in a Binary Tree.
+ * Calculates 2D canvas layout coordinates (X, Y) for every node in a Binary
+ * Tree.
  */
+ * 
 public class TreeLayoutCalculator {
 
     public static final double DEFAULT_TOP_MARGIN = 50.0;
@@ -15,10 +17,11 @@ public class TreeLayoutCalculator {
      * Calculates node positions for a binary tree based on canvas width.
      *
      * @param <T> Type of node data
+     * 
      * @param tree Binary tree to position
      * @param canvasWidth total available width of canvas
-     * @return root PositionedNode hierarchy with calculated coordinates
-     */
+     * @return ro           t PositionedNode hierarchy with calculated coordinates
+     */          
     public static <T> PositionedNode<T> calculateLayout(BinaryTree<T> tree, double canvasWidth) {
         double initialHOffset = canvasWidth / 4.0;
         return calculateLayout(tree, canvasWidth / 2.0, DEFAULT_TOP_MARGIN, DEFAULT_VERTICAL_GAP, initialHOffset);
@@ -40,6 +43,7 @@ public class TreeLayoutCalculator {
             double rootX,
             double rootY,
             double verticalGap,
+     * 
             double initialHOffset) {
 
         if (tree == null || tree.isEmpty()) {
@@ -63,7 +67,8 @@ public class TreeLayoutCalculator {
         PositionedNode<T> posNode = new PositionedNode<>(node, x, y);
 
         if (node.getLeft() != null) {
-            posNode.setLeft(computeNodePosition(
+            posNode.setLe
+            t(computeNodePosition(
                     node.getLeft(),
                     x - hOffset,
                     y + verticalGap,

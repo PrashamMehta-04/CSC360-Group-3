@@ -20,7 +20,8 @@ import java.util.List;
 
 /**
  * Interactive Binary Tree Visualizer JavaFX Application.
- * Allows users to input values to construct and visualize binary trees in real-time.
+ * Allows users to input values to construct and visualize binary trees in
+ * real-time.
  */
 public class App extends Application {
 
@@ -62,11 +63,13 @@ public class App extends Application {
         treeTypeComboBox.setValue("Left-to-Right (Level Order)");
 
         Button buildBtn = new Button("Build Tree");
-        buildBtn.setStyle("-fx-background-color: #3182CE; -fx-text-fill: white; -fx-font-weight: bold; -fx-cursor: hand;");
+        buildBtn.setStyle(
+                "-fx-background-color: #3182CE; -fx-text-fill: white; -fx-font-weight: bold; -fx-cursor: hand;");
         buildBtn.setOnAction(e -> handleBuildTree());
 
         Button clearBtn = new Button("Clear");
-        clearBtn.setStyle("-fx-background-color: #E2E8F0; -fx-text-fill: #4A5568; -fx-font-weight: bold; -fx-cursor: hand;");
+        clearBtn.setStyle(
+                "-fx-background-color: #E2E8F0; -fx-text-fill: #4A5568; -fx-font-weight: bold; -fx-cursor: hand;");
         clearBtn.setOnAction(e -> handleClear());
 
         controlBox.getChildren().addAll(inputLabel, inputField, modeLabel, treeTypeComboBox, buildBtn, clearBtn);
