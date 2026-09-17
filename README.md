@@ -10,7 +10,7 @@ Built with **Java 21 + JavaFX 21**, managed by **Maven**.
 **CSC360 — Group 3**
 
 | | |
-|Name|En. Number|
+|---|---|
 | **Bhavya Surati** | AU2340215 |
 | **Shubham Mehta** | AU2340210 |
 | **Pranel Agrawal** | AU2340209 |
