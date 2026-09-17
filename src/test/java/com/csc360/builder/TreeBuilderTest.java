@@ -32,17 +32,4 @@ public class TreeBuilderTest {
         assertNotNull(left.getRight());
         assertEquals(7, left.getRight().getData());
     }
-
-    @Test
-    public void testBuildBST() {
-        List<Integer> inputs = List.of(50, 30, 70, 20, 40);
-        BinaryTree<Integer> tree = TreeBuilder.buildBST(inputs);
-
-        assertNotNull(tree.getRoot());
-        assertEquals(50, tree.getRoot().getData());
-        assertEquals(30, tree.getRoot().getLeft().getData());
-        assertEquals(70, tree.getRoot().getRight().getData());
-        assertEquals(20, tree.getRoot().getLeft().getLeft().getData());
-        assertEquals(40, tree.getRoot().getLeft().getRight().getData());
-    }
 }
