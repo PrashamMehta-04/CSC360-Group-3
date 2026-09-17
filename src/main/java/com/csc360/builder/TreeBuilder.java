@@ -59,41 +59,4 @@ public class TreeBuilder {
 
         return tree;
     }
-
-    /**
-     * Builds a Binary Search Tree (BST) from a list of comparable input values.
-     *
-     * @param <T> Type of value implementing Comparable interface
-     * @param values sequence of input values
-     * @return constructed BinaryTree instance configured as a BST
-     */
-    public static <T extends Comparable<T>> BinaryTree<T> buildBST(List<T> values) {
-        BinaryTree<T> tree = new BinaryTree<>();
-        if (values == null || values.isEmpty()) {
-            return tree;
-        }
-
-        TreeNode<T> root = null;
-        for (T val : values) {
-            if (val != null) {
-                root = insertBST(root, val);
-            }
-        }
-        tree.setRoot(root);
-        return tree;
-    }
-
-    private static <T extends Comparable<T>> TreeNode<T> insertBST(TreeNode<T> current, T data) {
-        if (current == null) {
-            return new TreeNode<>(data);
-        }
-
-        int cmp = data.compareTo(current.getData());
-        if (cmp < 0) {
-            current.setLeft(insertBST(current.getLeft(), data));
-        } else if (cmp > 0) {
-            current.setRight(insertBST(current.getRight(), data));
-        }
-        return current;
-    }
 }

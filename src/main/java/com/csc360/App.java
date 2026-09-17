@@ -29,7 +29,6 @@ public class App extends Application {
     private TreeCanvasPane canvasPane;
     private ScrollPane scrollPane;
     private TextField inputField;
-    private ComboBox<String> treeTypeComboBox;
     private Label statusLabel;
     private Slider spacingSlider;
 
@@ -67,9 +66,8 @@ public class App extends Application {
         Label modeLabel = new Label("Tree Mode:");
         modeLabel.setStyle("-fx-font-weight: bold; -fx-text-fill: #2D3748;");
 
-        treeTypeComboBox = new ComboBox<>();
-        treeTypeComboBox.getItems().addAll("Left-to-Right (Level Order)", "Binary Search Tree (BST)");
-        treeTypeComboBox.setValue("Left-to-Right (Level Order)");
+        Label modeValueLabel = new Label("Left-to-Right (Level Order)");
+        modeValueLabel.setStyle("-fx-text-fill: #2D3748;");
 
         Button buildBtn = new Button("Build Tree");
         buildBtn.setStyle("-fx-background-color: #3182CE; -fx-text-fill: white; -fx-font-weight: bold; -fx-cursor: hand;");
@@ -91,7 +89,7 @@ public class App extends Application {
 
         controlBox.getChildren().addAll(
                 inputLabel, inputField,
-                modeLabel, treeTypeComboBox,
+                modeLabel, modeValueLabel,
                 buildBtn, clearBtn,
                 spacingLabel, spacingSlider
         );
@@ -130,12 +128,6 @@ public class App extends Application {
         double verticalGap    = spacingSlider != null ? spacingSlider.getValue() : TreeLayoutCalculator.DEFAULT_VERTICAL_GAP;
 
         // --- Node limit: prevent the tree from growing beyond the visible window ---
-        // Compute the maximum tree depth that fits within both width and height.
-        //   Width constraint:  at the deepest level, each leaf needs MIN_LEAF_SPACING pixels.
-        //                      Leaves at depth d = 2^(d-1), so: 2^(d-1) * MIN_LEAF_SPACING <= viewportWidth
-        //                      → maxDepthByWidth = floor(log2(viewportWidth / MIN_LEAF_SPACING)) + 1
-        //   Height constraint: each level adds verticalGap pixels below the top margin.
-        //                      → maxDepthByHeight = floor((viewportHeight - TOP_MARGIN) / verticalGap)
         int maxDepthByWidth  = (int)(Math.log(viewportWidth / TreeLayoutCalculator.MIN_LEAF_SPACING) / Math.log(2)) + 1;
         int maxDepthByHeight = (int)((viewportHeight - TreeLayoutCalculator.DEFAULT_TOP_MARGIN) / verticalGap);
         int maxDepth         = Math.max(1, Math.min(maxDepthByWidth, maxDepthByHeight));
@@ -149,13 +141,7 @@ public class App extends Application {
             trimmed = true;
         }
 
-        BinaryTree<Integer> tree;
-        String mode = treeTypeComboBox.getValue();
-        if ("Binary Search Tree (BST)".equals(mode)) {
-            tree = TreeBuilder.buildBST(values);
-        } else {
-            tree = TreeBuilder.buildLevelOrder(values);
-        }
+        BinaryTree<Integer> tree = TreeBuilder.buildLevelOrder(values);
 
         double reqWidth  = TreeLayoutCalculator.calculateRequiredWidth(tree, viewportWidth);
         double reqHeight = TreeLayoutCalculator.calculateRequiredHeight(tree, viewportHeight, verticalGap);
@@ -173,8 +159,8 @@ public class App extends Application {
         } else {
             statusLabel.setStyle("-fx-text-fill: #718096; -fx-font-size: 12px;");
             statusLabel.setText(String.format(
-                "Status: Built %s tree with %d nodes. Max allowed: %d. Scroll/Drag to navigate.",
-                mode, values.size(), maxNodes));
+                "Status: Built tree with %d nodes. Max allowed: %d. Scroll/Drag to navigate.",
+                values.size(), maxNodes));
         }
     }
 
