@@ -5,6 +5,17 @@ Built with **Java 21 + JavaFX 21**, managed by **Maven**.
 
 ---
 
+## Team
+
+**CSC360 — Group 3**
+
+| | |
+|---|---|
+| **Bhavya Surati** | AU2340215 |
+| **Shubham Mehta** | AU2340210 |
+| **Pranel Agrawal** | AU2340209 |
+| **Prasham Mehta** | AU2340135 |
+
 ## Tech Stack
 
 | | |
@@ -12,13 +23,12 @@ Built with **Java 21 + JavaFX 21**, managed by **Maven**.
 | **Language** | Java 21 |
 | **UI Framework** | JavaFX 21.0.2 |
 | **Build Tool** | Maven 3.6+ |
-| **Testing** | JUnit Jupiter 5.10.2 |
 
 ---
 
 ## Screenshot
 
-![App Screenshot](docs/screenshot.png)
+![App Screenshot](docs/readme.jpeg)
 
 ---
 
@@ -45,7 +55,6 @@ mvn test
 - Enter a comma/space-separated list of numbers in the input field
 - Choose a tree mode:
   - **Level-Order** — fills the tree row by row (like reading left to right)
-  - **BST** — inserts each value by BST rules (smaller → left, larger → right)
 - Click **Build Tree** to render
 - Use the **Spacing** slider to adjust vertical gap between levels
 - **Drag** the canvas to pan; **scroll** to zoom
@@ -74,9 +83,3 @@ src/main/java/com/csc360/
 └── view/
     └── TreeCanvasPane.java         ← Draws circles, lines, and labels on screen
 ```
-
----
-
-## Team
-
-**CSC360 — Group 3**
