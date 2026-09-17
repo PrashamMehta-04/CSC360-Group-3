@@ -125,6 +125,30 @@ public class App extends Application {
             return;
         }
 
+        double viewportWidth  = scrollPane.getViewportBounds().getWidth()  > 0 ? scrollPane.getViewportBounds().getWidth()  : 1000.0;
+        double viewportHeight = scrollPane.getViewportBounds().getHeight() > 0 ? scrollPane.getViewportBounds().getHeight() : 600.0;
+        double verticalGap    = spacingSlider != null ? spacingSlider.getValue() : TreeLayoutCalculator.DEFAULT_VERTICAL_GAP;
+
+        // --- Node limit: prevent the tree from growing beyond the visible window ---
+        // Compute the maximum tree depth that fits within both width and height.
+        //   Width constraint:  at the deepest level, each leaf needs MIN_LEAF_SPACING pixels.
+        //                      Leaves at depth d = 2^(d-1), so: 2^(d-1) * MIN_LEAF_SPACING <= viewportWidth
+        //                      → maxDepthByWidth = floor(log2(viewportWidth / MIN_LEAF_SPACING)) + 1
+        //   Height constraint: each level adds verticalGap pixels below the top margin.
+        //                      → maxDepthByHeight = floor((viewportHeight - TOP_MARGIN) / verticalGap)
+        int maxDepthByWidth  = (int)(Math.log(viewportWidth / TreeLayoutCalculator.MIN_LEAF_SPACING) / Math.log(2)) + 1;
+        int maxDepthByHeight = (int)((viewportHeight - TreeLayoutCalculator.DEFAULT_TOP_MARGIN) / verticalGap);
+        int maxDepth         = Math.max(1, Math.min(maxDepthByWidth, maxDepthByHeight));
+
+        // A perfect binary tree of depth d has 2^d - 1 nodes (maximum possible).
+        int maxNodes = (1 << maxDepth) - 1;
+
+        boolean trimmed = false;
+        if (values.size() > maxNodes) {
+            values = values.subList(0, maxNodes); // silently trim to the allowed count
+            trimmed = true;
+        }
+
         BinaryTree<Integer> tree;
         String mode = treeTypeComboBox.getValue();
         if ("Binary Search Tree (BST)".equals(mode)) {
@@ -133,12 +157,7 @@ public class App extends Application {
             tree = TreeBuilder.buildLevelOrder(values);
         }
 
-        double viewportWidth = scrollPane.getViewportBounds().getWidth() > 0 ? scrollPane.getViewportBounds().getWidth() : 1000.0;
-        double viewportHeight = scrollPane.getViewportBounds().getHeight() > 0 ? scrollPane.getViewportBounds().getHeight() : 600.0;
-        
-        double verticalGap = spacingSlider != null ? spacingSlider.getValue() : TreeLayoutCalculator.DEFAULT_VERTICAL_GAP;
-
-        double reqWidth = TreeLayoutCalculator.calculateRequiredWidth(tree, viewportWidth);
+        double reqWidth  = TreeLayoutCalculator.calculateRequiredWidth(tree, viewportWidth);
         double reqHeight = TreeLayoutCalculator.calculateRequiredHeight(tree, viewportHeight, verticalGap);
 
         canvasPane.setPrefSize(reqWidth, reqHeight);
@@ -146,7 +165,17 @@ public class App extends Application {
         PositionedNode<Integer> layout = TreeLayoutCalculator.calculateLayout(tree, reqWidth, verticalGap);
         canvasPane.renderTree(layout);
 
-        statusLabel.setText(String.format("Status: Built %s tree with %d nodes. Canvas Size: %.0fx%.0f. Scroll/Drag to navigate.", mode, values.size(), reqWidth, reqHeight));
+        if (trimmed) {
+            statusLabel.setStyle("-fx-text-fill: #C05621; -fx-font-size: 12px;"); // orange warning
+            statusLabel.setText(String.format(
+                "⚠ Too many nodes! Showing first %d of your input (max %d fit in this window at current spacing).",
+                maxNodes, maxNodes));
+        } else {
+            statusLabel.setStyle("-fx-text-fill: #718096; -fx-font-size: 12px;");
+            statusLabel.setText(String.format(
+                "Status: Built %s tree with %d nodes. Max allowed: %d. Scroll/Drag to navigate.",
+                mode, values.size(), maxNodes));
+        }
     }
 
     private void handleClear() {
