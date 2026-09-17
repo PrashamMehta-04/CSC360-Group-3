@@ -31,7 +31,6 @@ public class App extends Application {
     private TextField inputField;
     private ComboBox<String> treeTypeComboBox;
     private Label statusLabel;
-    private Label zoomLabel;
     private Slider spacingSlider;
 
     @Override
@@ -80,37 +79,6 @@ public class App extends Application {
         clearBtn.setStyle("-fx-background-color: #E2E8F0; -fx-text-fill: #4A5568; -fx-font-weight: bold; -fx-cursor: hand;");
         clearBtn.setOnAction(e -> handleClear());
 
-        // Zoom Controls
-        Label zoomTitle = new Label("Zoom:");
-        zoomTitle.setStyle("-fx-font-weight: bold; -fx-text-fill: #2D3748; -fx-padding: 0 0 0 10;");
-
-        Button zoomInBtn = new Button("+");
-        zoomInBtn.setStyle("-fx-font-weight: bold; -fx-cursor: hand;");
-        zoomInBtn.setOnAction(e -> {
-            canvasPane.zoomIn();
-            updateZoomLabel();
-        });
-
-        Button zoomOutBtn = new Button("-");
-        zoomOutBtn.setStyle("-fx-font-weight: bold; -fx-cursor: hand;");
-        zoomOutBtn.setOnAction(e -> {
-            canvasPane.zoomOut();
-            updateZoomLabel();
-        });
-
-        Button resetZoomBtn = new Button("Reset");
-        resetZoomBtn.setStyle("-fx-font-weight: bold; -fx-cursor: hand;");
-        resetZoomBtn.setOnAction(e -> {
-            canvasPane.resetZoom();
-            updateZoomLabel();
-        });
-
-        zoomLabel = new Label("100%");
-        zoomLabel.setStyle("-fx-text-fill: #4A5568; -fx-font-size: 12px;");
-
-        // Listen for scroll wheel zoom changes
-        canvasPane.zoomScaleProperty().addListener((obs, oldVal, newVal) -> updateZoomLabel());
-
         // Spacing Controls
         Label spacingLabel = new Label("Spacing:");
         spacingLabel.setStyle("-fx-font-weight: bold; -fx-text-fill: #2D3748; -fx-padding: 0 0 0 10;");
@@ -125,13 +93,12 @@ public class App extends Application {
                 inputLabel, inputField,
                 modeLabel, treeTypeComboBox,
                 buildBtn, clearBtn,
-                spacingLabel, spacingSlider,
-                zoomTitle, zoomInBtn, zoomOutBtn, resetZoomBtn, zoomLabel
+                spacingLabel, spacingSlider
         );
         rootPane.setTop(controlBox);
 
         // Status bar at bottom
-        statusLabel = new Label("Ready. Enter numbers and click 'Build Tree'. Use mouse wheel or Drag to Pan & Zoom.");
+        statusLabel = new Label("Ready. Enter numbers and click 'Build Tree'. Drag to Pan.");
         statusLabel.setPadding(new Insets(8, 5, 0, 5));
         statusLabel.setStyle("-fx-text-fill: #718096; -fx-font-size: 12px;");
         rootPane.setBottom(statusLabel);
@@ -142,11 +109,6 @@ public class App extends Application {
         Scene scene = new Scene(rootPane, 1050, 700);
         primaryStage.setScene(scene);
         primaryStage.show();
-    }
-
-    private void updateZoomLabel() {
-        int percent = (int) Math.round(canvasPane.getZoomScale() * 100);
-        zoomLabel.setText(percent + "%");
     }
 
     private void handleBuildTree() {
@@ -184,13 +146,12 @@ public class App extends Application {
         PositionedNode<Integer> layout = TreeLayoutCalculator.calculateLayout(tree, reqWidth, verticalGap);
         canvasPane.renderTree(layout);
 
-        statusLabel.setText(String.format("Status: Built %s tree with %d nodes. Canvas Size: %.0fx%.0f. Scroll/Drag/Zoom to navigate.", mode, values.size(), reqWidth, reqHeight));
+        statusLabel.setText(String.format("Status: Built %s tree with %d nodes. Canvas Size: %.0fx%.0f. Scroll/Drag to navigate.", mode, values.size(), reqWidth, reqHeight));
     }
 
     private void handleClear() {
         inputField.setText("");
         canvasPane.renderTree(null);
-        canvasPane.resetZoom();
         statusLabel.setText("Status: Cleared.");
     }
 
