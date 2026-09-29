@@ -1,13 +1,12 @@
-# Implementation Plan: JavaFX Binary Tree & BST Visualizer
+# Implementation Plan: JavaFX Binary Tree Visualizer
 
-A JavaFX desktop application to construct, render, and visually interact with **Binary Trees** (Level-Order) and **Binary Search Trees (BST)**.
+A JavaFX desktop application to construct, render, and visually interact with **Binary Trees** (Level-Order).
 
 ## Project Goal
 "Write a JavaFx program to draw a binary tree."
 
-The app provides two modes of tree generation:
+The app provides tree generation:
 1. **Level-Order Binary Tree**: Constructs the tree from left-to-right top-to-bottom based on input sequence.
-2. **Binary Search Tree (BST)**: Orders inserted elements according to BST rules ($left < root < right$).
 
 ---
 
@@ -48,7 +47,6 @@ The app provides two modes of tree generation:
 
 #### `ControlPanel.java` (`com.csc360.view`)
 - User inputs (comma/space-separated numbers).
-- Mode selection (Level-Order Binary Tree vs BST).
 - Action buttons (**Build Tree**, **Insert**, **Delete**, **Search**, **Clear**).
 - Status bar displaying tree depth, node count, and traversal orders (In-order, Pre-order, Post-order).
 

@@ -28,7 +28,6 @@ We have a working **JavaFX desktop application** that allows users to interactiv
 ### Current Features
 
 - **Custom Input Sequence** — Users can type a comma-separated sequence of integers (e.g., `10, 5, 15, 2, 7, 12, 20, 1, 1, ...`) and build a tree from it.
-- **Tree Mode Selection** — Supports multiple insertion modes via a dropdown; currently demonstrated with **Left-to-Right (Level Order)** traversal.
 - **Visual Tree Rendering** — Nodes are rendered as styled dark-blue circles with white text, connected by edge lines on a light-gray canvas.
 - **Clear Button** — Resets the canvas/input for a fresh start.
 - **Vertical Spacing Slider** — Adjusts the vertical gap between tree levels in real time.
@@ -53,7 +52,7 @@ The input sequence `10, 5, 15, 2, 7, 12, 20, 1, 1, 1, 1, 1, 1, 1` produces a **4
 
 ### Next Steps
 
-- [ ] Add support for additional tree modes (e.g., BST Insert, Pre/In/Post-Order)
+- [ ] Add support for additional tree modes (e.g., Pre/In/Post-Order)
 - [ ] Highlight traversal paths with animation
 - [ ] Export tree as image
 - [ ] Add node deletion and search functionality
