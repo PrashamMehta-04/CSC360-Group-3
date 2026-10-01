@@ -1,9 +1,6 @@
 package com.csc360.view;
 
 import com.csc360.layout.PositionedNode;
-import javafx.beans.property.DoubleProperty;
-import javafx.beans.property.SimpleDoubleProperty;
-import javafx.scene.input.ScrollEvent;
 import javafx.scene.layout.Pane;
 import javafx.scene.paint.Color;
 import javafx.scene.shape.Circle;
@@ -25,81 +22,14 @@ public class TreeCanvasPane extends Pane {
     private static final Color LINE_COLOR = Color.web("#4A6B82");
     private static final Color TEXT_COLOR = Color.WHITE;
 
-    private static final double MIN_ZOOM = 0.2;
-    private static final double MAX_ZOOM = 3.0;
-
-    private final DoubleProperty zoomScale = new SimpleDoubleProperty(1.0);
-
-    // Mouse drag tracking for panning
-    private double lastMouseX;
-    private double lastMouseY;
-
     public TreeCanvasPane() {
         setStyle("-fx-background-color: #F8FAFC; -fx-border-color: #E2E8F0; -fx-border-width: 1;");
-
-        // Bind JavaFX scale transforms to zoomScale property
-        scaleXProperty().bind(zoomScale);
-        scaleYProperty().bind(zoomScale);
-
-        // Setup mouse scroll wheel zoom
-        setOnScroll(this::handleScroll);
-
-        // Setup click-and-drag panning
-        setOnMousePressed(event -> {
-            lastMouseX = event.getSceneX();
-            lastMouseY = event.getSceneY();
-        });
-
-        setOnMouseDragged(event -> {
-            double deltaX = event.getSceneX() - lastMouseX;
-            double deltaY = event.getSceneY() - lastMouseY;
-
-            setTranslateX(getTranslateX() + deltaX);
-            setTranslateY(getTranslateY() + deltaY);
-
-            lastMouseX = event.getSceneX();
-            lastMouseY = event.getSceneY();
-        });
-    }
-
-    private void handleScroll(ScrollEvent event) {
-        event.consume();
-        double delta = event.getDeltaY();
-        double scaleFactor = (delta > 0) ? 1.1 : 0.9;
-        setZoomScale(zoomScale.get() * scaleFactor);
-    }
-
-    public DoubleProperty zoomScaleProperty() {
-        return zoomScale;
-    }
-
-    public double getZoomScale() {
-        return zoomScale.get();
-    }
-
-    public void setZoomScale(double scale) {
-        double clamped = Math.max(MIN_ZOOM, Math.min(MAX_ZOOM, scale));
-        zoomScale.set(clamped);
-    }
-
-    public void zoomIn() {
-        setZoomScale(zoomScale.get() * 1.2);
-    }
-
-    public void zoomOut() {
-        setZoomScale(zoomScale.get() / 1.2);
-    }
-
-    public void resetZoom() {
-        zoomScale.set(1.0);
-        setTranslateX(0);
-        setTranslateY(0);
     }
 
     /**
      * Renders a positioned tree layout hierarchy on the canvas pane.
      *
-     * @param <T> Data type of node values
+     * @param <T>        Data type of node values
      * @param rootLayout root node with calculated layout coordinates
      */
     public <T> void renderTree(PositionedNode<T> rootLayout) {
@@ -116,7 +46,8 @@ public class TreeCanvasPane extends Pane {
     }
 
     private <T> void drawLines(PositionedNode<T> node) {
-        if (node == null) return;
+        if (node == null)
+            return;
 
         PositionedNode<T> left = node.getLeft();
         PositionedNode<T> right = node.getRight();
@@ -165,8 +96,10 @@ public class TreeCanvasPane extends Pane {
             }
         }
 
-        if (left != null) drawLines(left);
-        if (right != null) drawLines(right);
+        if (left != null)
+            drawLines(left);
+        if (right != null)
+            drawLines(right);
     }
 
     private Line createLine(double startX, double startY, double endX, double endY) {
@@ -177,7 +110,8 @@ public class TreeCanvasPane extends Pane {
     }
 
     private <T> void drawNodes(PositionedNode<T> node) {
-        if (node == null) return;
+        if (node == null)
+            return;
 
         // Draw circle for current node
         Circle circle = new Circle(node.getX(), node.getY(), NODE_RADIUS);
