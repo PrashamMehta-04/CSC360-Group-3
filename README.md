@@ -1,6 +1,6 @@
 # Interactive Binary Tree Visualizer
 
-![Application Screenshot](./docs/readme.jpeg)
+![Application Screenshot](./docs/readme.png)
 
 A JavaFX-based desktop application designed to construct, render, and visually interact with **Binary Trees**. 
 
@@ -27,7 +27,7 @@ In this application, we build **Level-Order Binary Trees**, meaning nodes are fi
 - **Dynamic Layout Engine**: An underlying mathematical layout engine computes precise (X, Y) coordinates ensuring tree branches never overlap.
 - **Interactive Navigation**: 
   - A real-time **Spacing Slider** allows you to dynamically adjust the vertical distance between tree levels.
-- **Responsive Canvas**: The canvas dimensions automatically calculate and scale to fit the exact size of the generated tree.
+- **No Node Overlap**: The precision layout guarantees branches never intersect, automatically capping insertions to a maximum of 31 nodes to prevent visual crowding.
 - **Dynamic Node Limiting**: Automatically detects your window size and spacing slider value to cap the maximum number of nodes, preventing the tree from growing out of bounds or causing rendering issues with overly massive inputs. The engine limits the max depth ($d$) and max node count ($N$) using the following mathematical formulas:
   - $d_{\text{width}} = \lfloor \log_2(\frac{\text{ViewportWidth}}{\text{MinLeafSpacing}}) \rfloor + 1$
   - $d_{\text{height}} = \lfloor \frac{\text{ViewportHeight} - \text{TopMargin}}{\text{VerticalGap}} \rfloor$
