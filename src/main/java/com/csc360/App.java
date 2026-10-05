@@ -21,8 +21,7 @@ import java.util.List;
 
 /**
  * Interactive Binary Tree Visualizer JavaFX Application.
- * Supports auto-expanding canvas with scrollbars, mouse scroll zoom, drag-to-pan,
- * and zero node overlapping layout algorithms.
+ * Supports zero node overlapping layout algorithms.
  */
 public class App extends Application {
 
@@ -39,7 +38,8 @@ public class App extends Application {
         BorderPane rootPane = new BorderPane();
         rootPane.setPadding(new Insets(10));
 
-        // Create canvas pane and wrap in a Group so transforms scale cleanly inside ScrollPane
+        // Create canvas pane and wrap in a Group so transforms scale cleanly inside
+        // ScrollPane
         canvasPane = new TreeCanvasPane();
         Group canvasGroup = new Group(canvasPane);
 
@@ -70,11 +70,13 @@ public class App extends Application {
         modeValueLabel.setStyle("-fx-text-fill: #2D3748;");
 
         Button buildBtn = new Button("Build Tree");
-        buildBtn.setStyle("-fx-background-color: #3182CE; -fx-text-fill: white; -fx-font-weight: bold; -fx-cursor: hand;");
+        buildBtn.setStyle(
+                "-fx-background-color: #3182CE; -fx-text-fill: white; -fx-font-weight: bold; -fx-cursor: hand;");
         buildBtn.setOnAction(e -> handleBuildTree());
 
         Button clearBtn = new Button("Clear");
-        clearBtn.setStyle("-fx-background-color: #E2E8F0; -fx-text-fill: #4A5568; -fx-font-weight: bold; -fx-cursor: hand;");
+        clearBtn.setStyle(
+                "-fx-background-color: #E2E8F0; -fx-text-fill: #4A5568; -fx-font-weight: bold; -fx-cursor: hand;");
         clearBtn.setOnAction(e -> handleClear());
 
         // Spacing Controls
@@ -91,8 +93,7 @@ public class App extends Application {
                 inputLabel, inputField,
                 modeLabel, modeValueLabel,
                 buildBtn, clearBtn,
-                spacingLabel, spacingSlider
-        );
+                spacingLabel, spacingSlider);
         rootPane.setTop(controlBox);
 
         // Status bar at bottom
@@ -123,14 +124,18 @@ public class App extends Application {
             return;
         }
 
-        double viewportWidth  = scrollPane.getViewportBounds().getWidth()  > 0 ? scrollPane.getViewportBounds().getWidth()  : 1000.0;
-        double viewportHeight = scrollPane.getViewportBounds().getHeight() > 0 ? scrollPane.getViewportBounds().getHeight() : 600.0;
-        double verticalGap    = spacingSlider != null ? spacingSlider.getValue() : TreeLayoutCalculator.DEFAULT_VERTICAL_GAP;
+        double viewportWidth = scrollPane.getViewportBounds().getWidth() > 0 ? scrollPane.getViewportBounds().getWidth()
+                : 1000.0;
+        double viewportHeight = scrollPane.getViewportBounds().getHeight() > 0
+                ? scrollPane.getViewportBounds().getHeight()
+                : 600.0;
+        double verticalGap = spacingSlider != null ? spacingSlider.getValue()
+                : TreeLayoutCalculator.DEFAULT_VERTICAL_GAP;
 
         // --- Node limit: prevent the tree from growing beyond the visible window ---
-        int maxDepthByWidth  = (int)(Math.log(viewportWidth / TreeLayoutCalculator.MIN_LEAF_SPACING) / Math.log(2)) + 1;
-        int maxDepthByHeight = (int)((viewportHeight - TreeLayoutCalculator.DEFAULT_TOP_MARGIN) / verticalGap);
-        int maxDepth         = Math.max(1, Math.min(maxDepthByWidth, maxDepthByHeight));
+        int maxDepthByWidth = (int) (Math.log(viewportWidth / TreeLayoutCalculator.MIN_LEAF_SPACING) / Math.log(2)) + 1;
+        int maxDepthByHeight = (int) ((viewportHeight - TreeLayoutCalculator.DEFAULT_TOP_MARGIN) / verticalGap);
+        int maxDepth = Math.max(1, Math.min(maxDepthByWidth, maxDepthByHeight));
 
         // A perfect binary tree of depth d has 2^d - 1 nodes (maximum possible).
         int maxNodes = (1 << maxDepth) - 1;
@@ -143,7 +148,7 @@ public class App extends Application {
 
         BinaryTree<Integer> tree = TreeBuilder.buildLevelOrder(values);
 
-        double reqWidth  = TreeLayoutCalculator.calculateRequiredWidth(tree, viewportWidth);
+        double reqWidth = TreeLayoutCalculator.calculateRequiredWidth(tree, viewportWidth);
         double reqHeight = TreeLayoutCalculator.calculateRequiredHeight(tree, viewportHeight, verticalGap);
 
         canvasPane.setPrefSize(reqWidth, reqHeight);
@@ -154,13 +159,13 @@ public class App extends Application {
         if (trimmed) {
             statusLabel.setStyle("-fx-text-fill: #C05621; -fx-font-size: 12px;"); // orange warning
             statusLabel.setText(String.format(
-                "⚠ Too many nodes! Showing first %d of your input (max %d fit in this window at current spacing).",
-                maxNodes, maxNodes));
+                    "⚠ Too many nodes! Showing first %d of your input (max %d fit in this window at current spacing).",
+                    maxNodes, maxNodes));
         } else {
             statusLabel.setStyle("-fx-text-fill: #718096; -fx-font-size: 12px;");
             statusLabel.setText(String.format(
-                "Status: Built tree with %d nodes. Max allowed: %d. Scroll/Drag to navigate.",
-                values.size(), maxNodes));
+                    "Status: Built tree with %d nodes. Max allowed: %d. Scroll/Drag to navigate.",
+                    values.size(), maxNodes));
         }
     }
 
